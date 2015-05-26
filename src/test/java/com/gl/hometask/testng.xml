@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+        <suite parallel="none" name="Custom suite">
+
+            <test name="untitled" annotations="JDK" verbose="1">-
+                <classes>
+                    <class name="com.gl.hometask.SignUpTest"/>
+                    <class name="com.gl.hometask.LoginTest"/>
+                </classes>
+            </test>
+
+        </suite>
