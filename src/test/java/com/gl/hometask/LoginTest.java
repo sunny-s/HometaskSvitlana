@@ -25,11 +25,11 @@ public class LoginTest {
     String userpass = "123";
 
 
-    By usernameLocator = By.xpath("//*[@id='j_username']");
+/*    By usernameLocator = By.xpath("//*[@id='j_username']");
     By passwordLocator = By.xpath("//*[@name='j_password']");
     By submitLocator = By.id("yui-gen1-button");
 
-    @BeforeClass
+*/  @BeforeClass
     public static  void  startUpBrowser(){
         driver = new FirefoxDriver();
     }
