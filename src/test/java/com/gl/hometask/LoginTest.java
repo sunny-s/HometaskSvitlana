@@ -1,6 +1,7 @@
 package com.gl.hometask;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import static org.testng.Assert.*;
@@ -23,71 +24,61 @@ public class LoginTest {
     String numChar="Ab12c";
     String username = "abc";
     String userpass = "123";
+    String errorURL = "http://seltr-kbp1-1.synapse.com:8080/loginError";
+    String testErrorMessage = "Invalid login information";
 
 
-/*    By usernameLocator = By.xpath("//*[@id='j_username']");
-    By passwordLocator = By.xpath("//*[@name='j_password']");
-    By submitLocator = By.id("yui-gen1-button");
 
-*/  @BeforeClass
+
+    @BeforeClass
     public static  void  startUpBrowser(){
         driver = new FirefoxDriver();
     }
 
+    LoginPageLayout testLoginPage = new LoginPageLayout(driver);
+
+
     @BeforeMethod
     public static  void  initPage(){
-         driver.get("http://seltr-kbp1-1.synapse.com:8080/login?from=%2F");
+         driver.get("http://127.0.0.1:8080/login?from=%2F");
+        return;
 }
 
 
     @Test
-    public void myInputLogin (){
+    public void myLoginOnly (){
 
-        loginForm = driver.findElement(By.name("login"));
-
-        loginForm.findElement(By.name("j_username")).sendKeys("123");
-        //findLoginForm.
-        loginForm.submit();
-        assertTrue(driver.getCurrentUrl().equalsIgnoreCase("http://seltr-kbp1-1.synapse.com:8080/loginError"), "Invalid login information");
+        testLoginPage.usernameInput("123");
+        testLoginPage.submitForm();
+        assertTrue(errorURL.equalsIgnoreCase(driver.getCurrentUrl()),testErrorMessage);
 
     }
 
     @Test
-    public void myInputPass (){
+    public void myPassOnly (){
 
-        loginForm = driver.findElement(By.name("login"));
-
-        loginForm.findElement(By.name("j_password")).sendKeys("123");
-        //findLoginForm.
-        loginForm.submit();
-        assertTrue("http://seltr-kbp1-1.synapse.com:8080/loginError".equalsIgnoreCase(driver.getCurrentUrl()),"Invalid login information");
+        testLoginPage.passwordInput("123");
+        testLoginPage.submitForm();
+        assertTrue(errorURL.equalsIgnoreCase(driver.getCurrentUrl()),testErrorMessage);
 
     }
 
     @Test
-    public void myWrongLogpass () {
+    public void myInvalidLoginPassword() {
 
-        loginForm = driver.findElement(By.name("login"));
-        loginForm.findElement(By.name("j_username")).sendKeys("test");
-        loginForm.findElement(By.name("j_password")).sendKeys("test");
-        loginForm.submit();
-        assertTrue(driver.getCurrentUrl().equalsIgnoreCase("http://seltr-kbp1-1.synapse.com:8080/loginError"), "Invalid login information");
+        testLoginPage.usernameInput("test");
+        testLoginPage.passwordInput("test");
+        testLoginPage.submitForm();
+        assertTrue(errorURL.equalsIgnoreCase(driver.getCurrentUrl()),testErrorMessage);
+
     }
 
     @Test
-    public void myzCorrectLogpass (){
+    public void myzCorrectLogpass(){
 
-        loginForm = driver.findElement(By.name("login"));
-        loginForm.findElement(By.name("j_username")).sendKeys(username);
-        loginForm.findElement(By.name("j_password")).sendKeys(userpass);
-        loginForm.submit();
-
-   /*     try {
-            driver.findElement(By.xpath("./*//*[@id='header']/div[2]/span/a[2]/b")).getText().equalsIgnoreCase("log out");
-        }
-        catch (Exception ex) {
-
-        }*/
+        testLoginPage.usernameInput(username);
+        testLoginPage.passwordInput(userpass);
+        testLoginPage.submitForm();
 
         if( driver.findElements(By.xpath(".//*[@id='header']/div[2]/span/a[2]/b")).size() == 0){
             Assert.fail("Failed test. Couldn't login");
